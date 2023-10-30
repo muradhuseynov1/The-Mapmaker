@@ -1,0 +1,53 @@
+#game {
+    display: flex;
+    justify-content: space-between;
+}
+
+#map {
+    display: grid;
+    grid-template-columns: repeat(11, 30px);
+    grid-gap: 2px;
+}
+
+#map .cell {
+    width: 30px;
+    height: 30px;
+    background-image: url('base_tile.png');
+    background-size: cover;
+}
+
+#map .fixed {
+    background-image: url('mountain_tile.png');
+    background-size: cover;
+}
+
+#currentElement {
+    display: grid;
+    grid-template-columns: repeat(3, 30px);
+    grid-gap: 2px;
+}
+
+#currentElement .cell {
+    width: 30px;
+    height: 30px;
+}
+
+.cell[type="water"] {
+    background-image: url('water_tile.png');
+    background-size: cover;
+}
+
+.cell[type="town"] {
+    background-image: url('village_tile.png');
+    background-size: cover;
+}
+
+.cell[type="forest"] {
+    background-image: url('forest_tile.png');
+    background-size: cover;
+}
+
+.cell[type="farm"] {
+    background-image: url('plains_tile.png');
+    background-size: cover;
+}
