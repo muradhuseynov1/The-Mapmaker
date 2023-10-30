@@ -14,15 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             rotation: 0,
             mirrored: false
         },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 0],
-            [1, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
+        // rest of the elements
     ];
 
     function shuffle(array) {
@@ -81,6 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElementEl.style.gridTemplateColumns = `repeat(${activeColumns}, 30px)`;
         currentElementEl.style.gridTemplateRows = `repeat(${activeRows}, 30px)`;
 
+        const timeLabel = document.getElementById('timeLabel');
+        timeLabel.innerHTML = `${element.time} <img src="time_icon.png" alt="Time Icon" class="time-icon">`;
+
         rowsWithElements.forEach((rowFlag, rowIndex) => {
             if (rowFlag) {
                 columnsWithElements.forEach((colFlag, colIndex) => {
@@ -107,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function placeElement(position) {
-        console.log("Placing element at position: ", position); // Debug log
+        console.log("Placing element at position: ", position);
 
         const element = elements[currentElementIndex];
-        console.log("Element to be placed: ", element); // Debug log
+        console.log("Element to be placed: ", element);
 
         element.shape.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
@@ -118,14 +113,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const targetX = position[0] + rowIndex;
                     const targetY = position[1] + cellIndex;
 
-                    // Check if the target position is within the map bounds
                     if (targetX >= 0 && targetX < mapSize && targetY >= 0 && targetY < mapSize) {
                         const targetCell = mapEl.querySelector(`[data-position='${targetX},${targetY}']`);
-                        console.log("Target cell: ", targetCell); // Debug log
+                        console.log("Target cell: ", targetCell);
 
                         if (targetCell && !targetCell.classList.contains('fixed')) {
                             targetCell.setAttribute('type', element.type);
-                            console.log("Set type: ", element.type, " for cell: ", targetCell); // Debug log
+                            console.log("Set type: ", element.type, " for cell: ", targetCell);
                         }
                     }
                 }
@@ -141,3 +135,4 @@ document.addEventListener('DOMContentLoaded', function () {
     currentElementIndex = 0;
     displayElement(elements[currentElementIndex]);
 });
+
