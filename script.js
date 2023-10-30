@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const fixedCells = [[1, 1], [3, 8], [5, 3], [8, 9], [9, 5]];
     const mapEl = document.getElementById('map');
     const currentElementEl = document.getElementById('currentElement');
+    let remainingTime = 28;
 
     let elements = [
         {
@@ -24,6 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function preventDefault(event) {
+        event.preventDefault();
+    }
+
+    function handleDrop(event) {
+        const position = event.target.dataset.position.split(',').map(num => parseInt(num));
+        placeElement(position);
+    }
+
     function initializeMap() {
         for (let i = 0; i < mapSize; i++) {
             for (let j = 0; j < mapSize; j++) {
@@ -34,14 +44,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (fixedCells.some(coord => coord[0] === i && coord[1] === j)) {
                     cell.classList.add('fixed');
                 } else {
-                    cell.addEventListener('dragover', function (event) {
-                        event.preventDefault();
-                    });
+                    cell.addEventListener('dragover', preventDefault);
+                    cell.addEventListener('drop', handleDrop);
 
-                    cell.addEventListener('drop', function (event) {
-                        const position = event.target.dataset.position.split(',').map(num => parseInt(num));
-                        placeElement(position);
-                    });
                 }
 
                 mapEl.appendChild(cell);
@@ -107,6 +112,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const element = elements[currentElementIndex];
         console.log("Element to be placed: ", element);
 
+        if (!canPlaceElement(position, element)) {
+            console.log("Cannot place element at this position.");
+            return;
+        }
+
         element.shape.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 if (cell) {
@@ -128,6 +138,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentElementIndex = (currentElementIndex + 1) % elements.length;
         displayElement(elements[currentElementIndex]);
+
+        remainingTime -= element.time;
+
+        const timeRemainingLabel = document.getElementById('remainingTimeLabel');
+        timeRemainingLabel.textContent = `Remaining time: ${remainingTime}`;
+
+        if (remainingTime <= 0) {
+            console.log("Game Over!");
+            document.querySelectorAll('.cell:not(.fixed)').forEach(cell => {
+                cell.removeEventListener('dragover', preventDefault);
+                cell.removeEventListener('drop', handleDrop);
+            });
+        } else {
+            currentElementIndex = (currentElementIndex + 1) % elements.length;
+            displayElement(elements[currentElementIndex]);
+        }
+    }
+
+    function canPlaceElement(position, element) {
+        for (let i = 0; i < element.shape.length; i++) {
+            for (let j = 0; j < element.shape[i].length; j++) {
+                if (element.shape[i][j]) {
+                    const targetX = position[0] + i;
+                    const targetY = position[1] + j;
+
+                    if (targetX < 0 || targetX >= mapSize || targetY < 0 || targetY >= mapSize) {
+                        return false;
+                    }
+
+                    const targetCell = mapEl.querySelector(`[data-position='${targetX},${targetY}']`);
+
+                    if (targetCell.classList.contains('fixed') || targetCell.hasAttribute('type')) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     shuffle(elements);
