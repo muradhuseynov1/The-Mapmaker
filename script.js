@@ -3,14 +3,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const fixedCells = [[1, 1], [3, 8], [5, 3], [8, 9], [9, 5]];
     const mapEl = document.getElementById('map');
     const currentElementEl = document.getElementById('currentElement');
-    let remainingTime = 28;
+    let currentSeasonIndex = 0;
+    const seasons = ["spring", "summer", "autumn", "winter"];
+    let totalUsedTime = 0;
+    let score = 0;
+    let countedFullRows = Array(mapSize).fill(false);
+    let countedFullColumns = Array(mapSize).fill(false);
+
 
     let elements = [
         {
             time: 2,
-            type: 'farm',
+            type: 'water',
             shape: [[1, 1, 1],
-            [0, 1, 0],
+            [0, 0, 0],
             [0, 0, 0]],
             rotation: 0,
             mirrored: false
@@ -106,6 +112,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function displaySeason() {
+        const timeSpentInCurrentSeason = totalUsedTime % 7;
+
+        if (timeSpentInCurrentSeason == 0) {
+            document.querySelector(`.${seasons[currentSeasonIndex]}-progress`).textContent = '0';
+        } else {
+            document.querySelector(`.${seasons[currentSeasonIndex]}-progress`).textContent = timeSpentInCurrentSeason;
+        }
+    }
+
+
     function placeElement(position) {
         console.log("Placing element at position: ", position);
 
@@ -139,20 +156,24 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElementIndex = (currentElementIndex + 1) % elements.length;
         displayElement(elements[currentElementIndex]);
 
-        remainingTime -= element.time;
+        const timeSpentInCurrentSeason = totalUsedTime % 7;
 
-        const timeRemainingLabel = document.getElementById('remainingTimeLabel');
-        timeRemainingLabel.textContent = `Remaining time: ${remainingTime}`;
+        totalUsedTime += element.time;
 
-        if (remainingTime <= 0) {
+        if (timeSpentInCurrentSeason + element.time > 6 && currentSeasonIndex < 3) {
+            currentSeasonIndex++;
+        }
+
+        checkBorderlandsMission();
+
+        displaySeason();
+
+        if (totalUsedTime >= 28) {
             console.log("Game Over!");
             document.querySelectorAll('.cell:not(.fixed)').forEach(cell => {
                 cell.removeEventListener('dragover', preventDefault);
                 cell.removeEventListener('drop', handleDrop);
             });
-        } else {
-            currentElementIndex = (currentElementIndex + 1) % elements.length;
-            displayElement(elements[currentElementIndex]);
         }
     }
 
@@ -178,9 +199,47 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
+    function checkBorderlandsMission() {
+        for (let i = 0; i < mapSize; i++) {
+            if (countedFullRows[i]) continue;
+
+            let rowIsFull = true;
+            for (let j = 0; j < mapSize; j++) {
+                const cell = mapEl.querySelector(`[data-position='${i},${j}']`);
+                if (!cell.hasAttribute('type') && !cell.classList.contains('fixed')) {
+                    rowIsFull = false;
+                    break;
+                }
+            }
+            if (rowIsFull) {
+                countedFullRows[i] = true;
+                score += 6;
+            }
+        }
+
+        for (let j = 0; j < mapSize; j++) {
+            if (countedFullColumns[j]) continue;
+
+            let columnIsFull = true;
+            for (let i = 0; i < mapSize; i++) {
+                const cell = mapEl.querySelector(`[data-position='${i},${j}']`);
+                if (!cell.hasAttribute('type') && !cell.classList.contains('fixed')) {
+                    columnIsFull = false;
+                    break;
+                }
+            }
+            if (columnIsFull) {
+                countedFullColumns[j] = true;
+                score += 6;
+            }
+        }
+
+        // Update score display
+        document.getElementById('scoreDisplay').textContent = score;
+    }
+
     shuffle(elements);
     initializeMap();
     currentElementIndex = 0;
     displayElement(elements[currentElementIndex]);
 });
-

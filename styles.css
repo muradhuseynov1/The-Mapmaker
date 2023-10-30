@@ -103,3 +103,28 @@
     background-image: url('plains_tile.png');
     background-size: cover;
 }
+
+.season {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.season.spring {
+    color: #4CAF50;
+}
+
+.season.summer {
+    color: #FFC107;
+}
+
+.season.autumn {
+    color: #FF5722;
+}
+
+.season.winter {
+    color: #03A9F4;
+}
+
+.season-progress {
+    font-size: 14px;
+}
