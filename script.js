@@ -7,60 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let elements = [
         {
             time: 2,
-            type: 'water',
-            shape: [[1, 1, 1],
-            [0, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'farm',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
             type: 'farm',
             shape: [[1, 1, 1],
             [0, 1, 0],
@@ -73,78 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'town',
             shape: [[1, 1, 0],
             [1, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [1, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[0, 1, 0],
-            [1, 1, 1],
-            [0, 1, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 1],
-            [1, 0, 0],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 0, 0],
-            [1, 1, 1],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 1]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 0],
-            [1, 1, 0],
             [0, 0, 0]],
             rotation: 0,
             mirrored: false
@@ -186,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayElement(element) {
         currentElementEl.innerHTML = '';
 
-        // Find the dimensions of the shape.
         let shapeColumns = element.shape[0].length;
         let shapeRows = element.shape.length;
 
@@ -208,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElementEl.style.gridTemplateColumns = `repeat(${activeColumns}, 30px)`;
         currentElementEl.style.gridTemplateRows = `repeat(${activeRows}, 30px)`;
 
-        // Only render active rows and columns
         rowsWithElements.forEach((rowFlag, rowIndex) => {
             if (rowFlag) {
                 columnsWithElements.forEach((colFlag, colIndex) => {
@@ -234,16 +106,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     function placeElement(position) {
+        console.log("Placing element at position: ", position); // Debug log
+
         const element = elements[currentElementIndex];
+        console.log("Element to be placed: ", element); // Debug log
 
         element.shape.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 if (cell) {
-                    const targetCell = mapEl.querySelector(`[data-position='${position[0] + rowIndex},${position[1] + cellIndex}']`);
-                    if (targetCell && !targetCell.classList.contains('fixed')) {
-                        targetCell.setAttribute('type', element.type);
+                    const targetX = position[0] + rowIndex;
+                    const targetY = position[1] + cellIndex;
+
+                    // Check if the target position is within the map bounds
+                    if (targetX >= 0 && targetX < mapSize && targetY >= 0 && targetY < mapSize) {
+                        const targetCell = mapEl.querySelector(`[data-position='${targetX},${targetY}']`);
+                        console.log("Target cell: ", targetCell); // Debug log
+
+                        if (targetCell && !targetCell.classList.contains('fixed')) {
+                            targetCell.setAttribute('type', element.type);
+                            console.log("Set type: ", element.type, " for cell: ", targetCell); // Debug log
+                        }
                     }
                 }
             });

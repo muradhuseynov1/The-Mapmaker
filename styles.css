@@ -16,6 +16,27 @@
     background-size: cover;
 }
 
+#map .cell[type="town"] {
+    background-image: url('village_tile.png');
+    background-size: cover;
+}
+
+#map .cell[type="water"] {
+    background-image: url('water_tile.png');
+    background-size: cover;
+}
+
+#map .cell[type="forest"] {
+    background-image: url('forest_tile.png');
+    background-size: cover;
+}
+
+#map .cell[type="farm"] {
+    background-image: url('plains_tile.png');
+    background-size: cover;
+}
+
+
 #map .fixed {
     background-image: url('mountain_tile.png');
     background-size: cover;
