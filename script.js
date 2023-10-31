@@ -114,14 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displaySeason() {
         const timeSpentInCurrentSeason = totalUsedTime % 7;
-
-        if (timeSpentInCurrentSeason == 0) {
-            document.querySelector(`.${seasons[currentSeasonIndex]}-progress`).textContent = '0';
-        } else {
-            document.querySelector(`.${seasons[currentSeasonIndex]}-progress`).textContent = timeSpentInCurrentSeason;
-        }
+        document.querySelector('.season-progress').textContent = timeSpentInCurrentSeason;
     }
-
 
     function placeElement(position) {
         console.log("Placing element at position: ", position);
@@ -165,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         checkBorderlandsMission();
-
         displaySeason();
 
         if (totalUsedTime >= 28) {
@@ -234,7 +227,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Update score display
         document.getElementById('scoreDisplay').textContent = score;
     }
 

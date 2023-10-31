@@ -2,6 +2,18 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    width: 100%;
+}
+
+#rightSidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-basis: 30%;
+    /* Adjust width of right sidebar */
+    padding-left: 20px;
+    /* Space between map and right sidebar */
 }
 
 #map {
@@ -53,7 +65,8 @@
     display: inline-block;
     padding: 5px;
     border-radius: 5px;
-    flex-basis: 5%;
+    margin-top: 15px;
+    /* Space between elapsed time and current element */
 }
 
 #currentElement {
@@ -104,27 +117,26 @@
     background-size: cover;
 }
 
-.season {
-    font-size: 20px;
+.elapsed-time {
+    text-align: center;
+    /* Centering the text */
     margin-bottom: 15px;
-}
-
-.season.spring {
-    color: #4CAF50;
-}
-
-.season.summer {
-    color: #FFC107;
-}
-
-.season.autumn {
-    color: #FF5722;
-}
-
-.season.winter {
-    color: #03A9F4;
 }
 
 .season-progress {
     font-size: 14px;
+}
+
+#scoreDisplay {
+    background-image: url('Group_78.png');
+    background-size: cover;
+    width: 100%;
+    /* Adjust size */
+    height: 160px;
+    /* Adjust size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    /* Space between score and elapsed time */
 }
