@@ -21,6 +21,141 @@ document.addEventListener('DOMContentLoaded', function () {
             rotation: 0,
             mirrored: false
         },
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 0],
+            [1, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[0, 1, 0],
+            [1, 1, 1],
+            [0, 1, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 1],
+            [1, 0, 0],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 0, 0],
+            [1, 1, 1],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 1]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 0],
+            [1, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
         // rest of the elements
     ];
 
@@ -37,8 +172,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleDrop(event) {
         const position = event.target.dataset.position.split(',').map(num => parseInt(num));
-        placeElement(position);
+        const data = JSON.parse(event.dataTransfer.getData('text/plain'));
+        const offsetX = data.offsetX;
+        const offsetY = data.offsetY;
+
+        const adjustedPosition = [position[0] - offsetY, position[1] - offsetX];
+        placeElement(adjustedPosition);
     }
+
 
     function initializeMap() {
         for (let i = 0; i < mapSize; i++) {
@@ -131,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
         element.shape.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 if (cell) {
+                    // Adjusting target coordinates based on the origin (top-left corner)
                     const targetX = position[0] + rowIndex;
                     const targetY = position[1] + cellIndex;
 
@@ -176,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < element.shape.length; i++) {
             for (let j = 0; j < element.shape[i].length; j++) {
                 if (element.shape[i][j]) {
+                    // Adjusting target coordinates based on the origin (top-left corner)
                     const targetX = position[0] + i;
                     const targetY = position[1] + j;
 
@@ -192,6 +335,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         return true;
+    }
+
+    function rotateMatrix(matrix) {
+        const N = matrix.length - 1;
+        const result = matrix.map((row, i) =>
+            row.map((val, j) => matrix[N - j][i])
+        );
+        return result;
     }
 
     function checkBorderlandsMission() {
@@ -259,6 +410,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('edgeForestMission').textContent = 'forstedge = ' + forestEdgeCount;
     }
+
+    document.getElementById('rotateButton').addEventListener('click', function () {
+        elements[currentElementIndex].shape = rotateMatrix(elements[currentElementIndex].shape);
+        displayElement(elements[currentElementIndex]);
+    });
 
     shuffle(elements);
     initializeMap();
