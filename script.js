@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let totalUsedTime = 0;
     let forestEdgeCount = 0;
     let borderlandsCount = 0;
+    let wateringPotatoesCount = 0;
     let countedFullRows = Array(mapSize).fill(false);
     let countedFullColumns = Array(mapSize).fill(false);
 
@@ -17,141 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'water',
             shape: [[1, 1, 1],
             [0, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'farm',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'farm',
-            shape: [[1, 1, 1],
-            [0, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 0],
-            [1, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [1, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[0, 1, 0],
-            [1, 1, 1],
-            [0, 1, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 1],
-            [1, 0, 0],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 0, 0],
-            [1, 1, 1],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 1]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 0],
-            [1, 1, 0],
             [0, 0, 0]],
             rotation: 0,
             mirrored: false
@@ -272,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
         element.shape.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 if (cell) {
-                    // Adjusting target coordinates based on the origin (top-left corner)
                     const targetX = position[0] + rowIndex;
                     const targetY = position[1] + cellIndex;
 
@@ -295,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const timeSpentInCurrentSeason = totalUsedTime % 7;
 
         totalUsedTime += element.time;
+        document.getElementById("totalTime").innerHTML = "Total time: " + totalUsedTime;
 
         if (timeSpentInCurrentSeason + element.time > 6 && currentSeasonIndex < 3) {
             currentSeasonIndex++;
@@ -302,6 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         checkBorderlandsMission();
         checkEdgeOfTheForestMission();
+        checkWateringPotatoesMission();
+        checkSleepyValleyMission();
         displaySeason();
 
         if (totalUsedTime >= 28) {
@@ -318,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < element.shape.length; i++) {
             for (let j = 0; j < element.shape[i].length; j++) {
                 if (element.shape[i][j]) {
-                    // Adjusting target coordinates based on the origin (top-left corner)
                     const targetX = position[0] + i;
                     const targetY = position[1] + j;
 
@@ -343,6 +210,10 @@ document.addEventListener('DOMContentLoaded', function () {
             row.map((val, j) => matrix[N - j][i])
         );
         return result;
+    }
+
+    function mirrorMatrix(matrix) {
+        return matrix.map(row => [...row].reverse());
     }
 
     function checkBorderlandsMission() {
@@ -388,31 +259,98 @@ document.addEventListener('DOMContentLoaded', function () {
 
         for (let j = 0; j < mapSize; j++) {
             const topCell = mapEl.querySelector(`[data-position='0,${j}']`);
-            const bottomCell = mapEl.querySelector(`[data-position='${mapSize - 1},${j}']`);
             if (topCell.getAttribute('type') === 'forest') {
                 forestEdgeCount++;
             }
+        }
+
+        for (let j = 0; j < mapSize; j++) {
+            const bottomCell = mapEl.querySelector(`[data-position='${mapSize - 1},${j}']`);
             if (bottomCell.getAttribute('type') === 'forest') {
                 forestEdgeCount++;
             }
         }
 
-        for (let i = 0; i < mapSize; i++) {
+        for (let i = 1; i < mapSize - 1; i++) {
             const leftCell = mapEl.querySelector(`[data-position='${i},0']`);
-            const rightCell = mapEl.querySelector(`[data-position='${i},${mapSize - 1}']`);
             if (leftCell.getAttribute('type') === 'forest') {
                 forestEdgeCount++;
             }
+        }
+
+        for (let i = 1; i < mapSize - 1; i++) {
+            const rightCell = mapEl.querySelector(`[data-position='${i},${mapSize - 1}']`);
             if (rightCell.getAttribute('type') === 'forest') {
                 forestEdgeCount++;
             }
         }
 
-        document.getElementById('edgeForestMission').textContent = 'forstedge = ' + forestEdgeCount;
+        document.getElementById('edgeForestMission').textContent = 'forestedge = ' + forestEdgeCount;
     }
+
+    function checkWateringPotatoesMission() {
+        wateringPotatoesCount = 0;
+
+        for (let i = 0; i < mapSize; i++) {
+            for (let j = 0; j < mapSize; j++) {
+                const cell = mapEl.querySelector(`[data-position='${i},${j}']`);
+                if (cell.getAttribute('type') === 'farm') {
+                    const adjCells = [
+                        mapEl.querySelector(`[data-position='${i - 1},${j}']`),
+                        mapEl.querySelector(`[data-position='${i + 1},${j}']`),
+                        mapEl.querySelector(`[data-position='${i},${j - 1}']`),
+                        mapEl.querySelector(`[data-position='${i},${j + 1}']`)
+                    ];
+                    adjCells.forEach(adjCell => {
+                        if (adjCell && adjCell.getAttribute('type') === 'water') {
+                            wateringPotatoesCount += 2;
+                        }
+                    });
+                }
+            }
+        }
+
+        document.getElementById('wateringPotatoesMission').textContent = 'Watering potatoes score = ' + wateringPotatoesCount;
+    }
+
+    let sleepyValleyCount = 0; // Add this at the beginning of your script
+
+    function checkSleepyValleyMission() {
+        let points = 0;
+
+        for (let i = 0; i < mapSize; i++) {
+            let forestCountInRow = 0;
+
+            for (let j = 0; j < mapSize; j++) {
+                const cell = mapEl.querySelector(`[data-position='${i},${j}']`);
+                if (cell.getAttribute('type') === 'forest') {
+                    forestCountInRow++;
+                }
+            }
+
+            if (forestCountInRow === 3) {
+                points += 4;
+            }
+        }
+
+        sleepyValleyCount = points; // Update the total points for this mission
+        document.getElementById('sleepyValleyMission').textContent = 'Sleepy valley score = ' + sleepyValleyCount;
+    }
+
 
     document.getElementById('rotateButton').addEventListener('click', function () {
         elements[currentElementIndex].shape = rotateMatrix(elements[currentElementIndex].shape);
+        displayElement(elements[currentElementIndex]);
+    });
+
+    document.getElementById('mirrorButton').addEventListener('click', function () {
+        if (!elements[currentElementIndex].mirrored) {
+            elements[currentElementIndex].shape = mirrorMatrix(elements[currentElementIndex].shape);
+            elements[currentElementIndex].mirrored = true;
+        } else {
+            elements[currentElementIndex].mirrored = false;
+            elements[currentElementIndex].shape = mirrorMatrix(elements[currentElementIndex].shape);
+        }
         displayElement(elements[currentElementIndex]);
     });
 
