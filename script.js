@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cell.removeEventListener('dragover', preventDefault);
                 cell.removeEventListener('drop', handleDrop);
             });
+            displayTotalPoints();
             window.alert("GAME OVER! 28 TIME UNITS HAS PASSED");
         }
     }
@@ -313,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('wateringPotatoesMission').textContent = 'Watering potatoes score = ' + wateringPotatoesCount;
     }
 
-    let sleepyValleyCount = 0; // Add this at the beginning of your script
+    let sleepyValleyCount = 0;
 
     function checkSleepyValleyMission() {
         let points = 0;
@@ -333,8 +334,36 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        sleepyValleyCount = points; // Update the total points for this mission
+        sleepyValleyCount = points;
         document.getElementById('sleepyValleyMission').textContent = 'Sleepy valley score = ' + sleepyValleyCount;
+    }
+
+    function displayTotalPoints() {
+        const totalPointsContainer = document.createElement('div');
+        totalPointsContainer.className = 'total-points-container';
+
+        const borderlandsScore = document.createElement('p');
+        borderlandsScore.textContent = `Points from Borderlands: ${borderlandsCount}`;
+        totalPointsContainer.appendChild(borderlandsScore);
+
+        const forestEdgeScore = document.createElement('p');
+        forestEdgeScore.textContent = `Points from Edge of The Forest: ${forestEdgeCount}`;
+        totalPointsContainer.appendChild(forestEdgeScore);
+
+        const wateringPotatoesScore = document.createElement('p');
+        wateringPotatoesScore.textContent = `Points from Watering Potatoes: ${wateringPotatoesCount}`;
+        totalPointsContainer.appendChild(wateringPotatoesScore);
+
+        const sleepyValleyScore = document.createElement('p');
+        sleepyValleyScore.textContent = `Points from Sleepy Valley: ${sleepyValleyCount}`;
+        totalPointsContainer.appendChild(sleepyValleyScore);
+
+        const totalScore = document.createElement('p');
+        totalScore.textContent = `Total Points: ${borderlandsCount + forestEdgeCount + wateringPotatoesCount + sleepyValleyCount}`;
+        totalScore.style.fontWeight = 'bold';
+        totalPointsContainer.appendChild(totalScore);
+
+        document.body.appendChild(totalPointsContainer);
     }
 
 
