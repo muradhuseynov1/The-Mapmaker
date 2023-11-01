@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const mapEl = document.getElementById('map');
     const currentElementEl = document.getElementById('currentElement');
     let currentSeasonIndex = 0;
-    const seasons = ["spring", "summer", "autumn", "winter"];
     let totalUsedTime = 0;
-    let score = 0;
+    let forestEdgeCount = 0;
+    let borderlandsCount = 0;
     let countedFullRows = Array(mapSize).fill(false);
     let countedFullColumns = Array(mapSize).fill(false);
 
@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         checkBorderlandsMission();
+        checkEdgeOfTheForestMission();
         displaySeason();
 
         if (totalUsedTime >= 28) {
@@ -167,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cell.removeEventListener('dragover', preventDefault);
                 cell.removeEventListener('drop', handleDrop);
             });
+            window.alert("GAME OVER! 28 TIME UNITS HAS PASSED");
         }
     }
 
@@ -206,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (rowIsFull) {
                 countedFullRows[i] = true;
-                score += 6;
+                borderlandsCount += 6;
             }
         }
 
@@ -223,11 +225,39 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (columnIsFull) {
                 countedFullColumns[j] = true;
-                score += 6;
+                borderlandsCount += 6;
             }
         }
 
-        document.getElementById('scoreDisplay').textContent = score;
+        document.getElementById('scoreDisplay').textContent = borderlandsCount;
+    }
+
+    function checkEdgeOfTheForestMission() {
+        forestEdgeCount = 0;
+
+        for (let j = 0; j < mapSize; j++) {
+            const topCell = mapEl.querySelector(`[data-position='0,${j}']`);
+            const bottomCell = mapEl.querySelector(`[data-position='${mapSize - 1},${j}']`);
+            if (topCell.getAttribute('type') === 'forest') {
+                forestEdgeCount++;
+            }
+            if (bottomCell.getAttribute('type') === 'forest') {
+                forestEdgeCount++;
+            }
+        }
+
+        for (let i = 0; i < mapSize; i++) {
+            const leftCell = mapEl.querySelector(`[data-position='${i},0']`);
+            const rightCell = mapEl.querySelector(`[data-position='${i},${mapSize - 1}']`);
+            if (leftCell.getAttribute('type') === 'forest') {
+                forestEdgeCount++;
+            }
+            if (rightCell.getAttribute('type') === 'forest') {
+                forestEdgeCount++;
+            }
+        }
+
+        document.getElementById('edgeForestMission').textContent = 'forstedge = ' + forestEdgeCount;
     }
 
     shuffle(elements);
