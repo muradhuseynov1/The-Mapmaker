@@ -9,18 +9,17 @@
 </head>
 
 <body>
-    <p id="totalTime"></p>
-    <p id="totalScore"></p>
+    <h1>Potato Map</h1>
     <div id="game">
         <div id="map"></div>
         <div id="rightSidebar">
-            <div class="elapsed-time">Elapsed time in current season: <span class="season-progress"></span>/7</div>
-            <div id="currentElementWrapper">
-                <div id="timeLabel"></div>
-                <div id="currentElement"></div>
-                <button id="rotateButton">Rotate</button>
-                <button id="mirrorButton">Mirror</button>
+
+            <div id="statsContainer">
+                <span id="totalTime">Total time: 0</span>
+                <span id="totalPoints">Total Points: 0</span>
             </div>
+
+            <hr>
 
             <div class="grid-container">
                 <div class="game-element">
@@ -38,6 +37,23 @@
                 <div class="game-element">
                     <img src="sleepyValley.png" alt="Game Image">
                     <span class="score"></span>
+                </div>
+            </div>
+
+            <div class="elapsed-time">Elapsed time in current season: <span class="season-progress"></span>/7</div>
+
+            <hr>
+            <br>
+
+            <div class="element-control">
+                <span class="element-label">Current element:</span>
+                <div class="button-wrapper">
+                    <button id="rotateButton">Rotate</button>
+                    <button id="mirrorButton">Mirror</button>
+                </div>
+                <div id="currentElementWrapper">
+                    <div id="timeLabel"></div>
+                    <div id="currentElement"></div>
                 </div>
             </div>
         </div>

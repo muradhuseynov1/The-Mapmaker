@@ -22,141 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
             rotation: 0,
             mirrored: false
         },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'farm',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 1],
-            [0, 0, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [0, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'farm',
-            shape: [[1, 1, 1],
-            [0, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 0],
-            [1, 0, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'town',
-            shape: [[1, 1, 1],
-            [1, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 1,
-            type: 'farm',
-            shape: [[0, 1, 0],
-            [1, 1, 1],
-            [0, 1, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 1],
-            [1, 0, 0],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 0, 0],
-            [1, 1, 1],
-            [1, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 1]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'forest',
-            shape: [[1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
-        {
-            time: 2,
-            type: 'water',
-            shape: [[1, 1, 0],
-            [1, 1, 0],
-            [0, 0, 0]],
-            rotation: 0,
-            mirrored: false
-        },
         // rest of the elements
     ];
 
@@ -225,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentElementEl.style.gridTemplateColumns = `repeat(${activeColumns}, 30px)`;
         currentElementEl.style.gridTemplateRows = `repeat(${activeRows}, 30px)`;
+        currentElementEl.style.justifyContent = 'center'; // center the grid horizontally
+        currentElementEl.style.alignItems = 'center'; // center the grid vertically
 
         const timeLabel = document.getElementById('timeLabel');
         timeLabel.innerHTML = `${element.time} <img src="time_icon.png" alt="Time Icon" class="time-icon">`;
@@ -305,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
         checkEdgeOfTheForestMission();
         checkWateringPotatoesMission();
         checkSleepyValleyMission();
+        displayTotalPoints();
         displaySeason();
 
         if (totalUsedTime >= 28) {
@@ -485,33 +353,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayTotalPoints() {
-        const totalPointsContainer = document.createElement('div');
-        totalPointsContainer.className = 'total-points-container';
-
-        const borderlandsScore = document.createElement('p');
-        borderlandsScore.textContent = `Points from Borderlands: ${borderlandsCount}`;
-        totalPointsContainer.appendChild(borderlandsScore);
-
-        const forestEdgeScore = document.createElement('p');
-        forestEdgeScore.textContent = `Points from Edge of The Forest: ${forestEdgeCount}`;
-        totalPointsContainer.appendChild(forestEdgeScore);
-
-        const wateringPotatoesScore = document.createElement('p');
-        wateringPotatoesScore.textContent = `Points from Watering Potatoes: ${wateringPotatoesCount}`;
-        totalPointsContainer.appendChild(wateringPotatoesScore);
-
-        const sleepyValleyScore = document.createElement('p');
-        sleepyValleyScore.textContent = `Points from Sleepy Valley: ${sleepyValleyCount}`;
-        totalPointsContainer.appendChild(sleepyValleyScore);
-
-        const totalScore = document.createElement('p');
-        totalScore.textContent = `Total Points: ${borderlandsCount + forestEdgeCount + wateringPotatoesCount + sleepyValleyCount}`;
-        totalScore.style.fontWeight = 'bold';
-        totalPointsContainer.appendChild(totalScore);
-
-        document.body.appendChild(totalPointsContainer);
+        const totalPts = borderlandsCount + forestEdgeCount + wateringPotatoesCount + sleepyValleyCount;
+        document.getElementById("totalPoints").textContent = `Total Points: ${totalPts}`;
     }
-
 
     document.getElementById('rotateButton').addEventListener('click', function () {
         elements[currentElementIndex].shape = rotateMatrix(elements[currentElementIndex].shape);
