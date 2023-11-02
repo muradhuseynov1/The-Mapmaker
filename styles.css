@@ -127,20 +127,6 @@
     font-size: 14px;
 }
 
-#scoreDisplay {
-    background-image: url('borderlands.png');
-    background-size: cover;
-    width: 100%;
-    /* Adjust size */
-    height: 160px;
-    /* Adjust size */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-    /* Space between score and elapsed time */
-}
-
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

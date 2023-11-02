@@ -387,7 +387,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        document.getElementById('scoreDisplay').textContent = borderlandsCount;
         updateMissionScores();
     }
 
@@ -422,7 +421,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        document.getElementById('edgeForestMission').textContent = 'forestedge = ' + forestEdgeCount;
         updateMissionScores();
     }
 
@@ -448,7 +446,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        document.getElementById('wateringPotatoesMission').textContent = 'Watering potatoes score = ' + wateringPotatoesCount;
         updateMissionScores();
     }
 
@@ -473,7 +470,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         sleepyValleyCount = points;
-        document.getElementById('sleepyValleyMission').textContent = 'Sleepy valley score = ' + sleepyValleyCount;
+
         updateMissionScores();
     }
 
