@@ -10,9 +10,11 @@
 
 <body>
     <p id="totalTime"></p>
+    <p id="totalScore"></p>
     <div id="game">
         <div id="map"></div>
         <div id="rightSidebar">
+            <span id="scoreDisplay"></span>
             <div class="elapsed-time">Elapsed time in current season: <span class="season-progress"></span>/7</div>
             <div id="currentElementWrapper">
                 <div id="timeLabel"></div>
@@ -21,28 +23,32 @@
                 <button id="mirrorButton">Mirror</button>
             </div>
         </div>
+        <div class="mission" id="edgeForestMission">
+            <h2>Edge of the forest</h2>
+            <p>You get one point for each forest field adjacent to the edge of your map.</p>
+            <div id="edgeForestScore"></div>
+        </div>
         <div id="wateringPotatoesMission">Watering potatoes score = 0</div>
         <div id="sleepyValleyMission">Sleepy valley score = 0</div>
 
-        <div class="missions">
-            <div class="mission">
-                <img src="Group_78.png" alt="Game Image">
+        <div class="grid-container">
+            <div class="game-element">
+                <img src="borderlands.png" alt="Game Image">
                 <span class="score"></span>
             </div>
-            <div class="mission">
-                <img src="Group_69.png" alt="Game Image">
-                <span class="score">Hello</span>
+            <div class="game-element">
+                <img src="edgeOfTheForest.png" alt="Game Image">
+                <span class="score"></span>
             </div>
-            <div class="mission">
-                <img src="Group_70.png" alt="Game Image">
-                <span class="score">Hello</span>
+            <div class="game-element">
+                <img src="wateringPotatoes.png" alt="Game Image">
+                <span class="score"></span>
             </div>
-            <div class="mission">
-                <img src="Group_74.png" alt="Game Image">
-                <span class="score">Hello</span>
+            <div class="game-element">
+                <img src="sleepyValley.png" alt="Game Image">
+                <span class="score"></span>
             </div>
         </div>
-
     </div>
     <script src="script.js"></script>
 </body>

@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let forestEdgeCount = 0;
     let borderlandsCount = 0;
     let wateringPotatoesCount = 0;
-    let sleepyValleyCount = 0;
     let countedFullRows = Array(mapSize).fill(false);
     let countedFullColumns = Array(mapSize).fill(false);
 
@@ -19,6 +18,141 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'water',
             shape: [[1, 1, 1],
             [0, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 0],
+            [1, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[0, 1, 0],
+            [1, 1, 1],
+            [0, 1, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 1],
+            [1, 0, 0],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 0, 0],
+            [1, 1, 1],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 1]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 0],
+            [1, 1, 0],
             [0, 0, 0]],
             rotation: 0,
             mirrored: false
@@ -126,13 +260,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function placeElement(position) {
-        // console.log("Placing element at position: ", position);
+        console.log("Placing element at position: ", position);
 
         const element = elements[currentElementIndex];
-        // console.log("Element to be placed: ", element);
+        console.log("Element to be placed: ", element);
 
         if (!canPlaceElement(position, element)) {
-            // console.log("Cannot place element at this position.");
+            console.log("Cannot place element at this position.");
             return;
         }
 
@@ -253,8 +387,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        document.getElementById('borderlands').textContent = "borderlands: " + borderlandsCount;
-        updateMissionScores()
+        document.getElementById('scoreDisplay').textContent = borderlandsCount;
+        updateMissionScores();
     }
 
     function checkEdgeOfTheForestMission() {
@@ -289,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         document.getElementById('edgeForestMission').textContent = 'forestedge = ' + forestEdgeCount;
-        updateMissionScores()
+        updateMissionScores();
     }
 
     function checkWateringPotatoesMission() {
@@ -315,8 +449,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         document.getElementById('wateringPotatoesMission').textContent = 'Watering potatoes score = ' + wateringPotatoesCount;
-        updateMissionScores()
+        updateMissionScores();
     }
+
+    let sleepyValleyCount = 0;
 
     function checkSleepyValleyMission() {
         let points = 0;
@@ -338,7 +474,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         sleepyValleyCount = points;
         document.getElementById('sleepyValleyMission').textContent = 'Sleepy valley score = ' + sleepyValleyCount;
-        updateMissionScores()
+        updateMissionScores();
+    }
+
+    function updateMissionScores() {
+        const missionsEls = document.querySelectorAll('.game-element .score');
+        if (missionsEls && missionsEls.length) {
+            missionsEls[0].textContent = `(${borderlandsCount} points)`;
+            missionsEls[1].textContent = `(${forestEdgeCount} points)`;
+            missionsEls[2].textContent = `(${wateringPotatoesCount} points)`;
+            missionsEls[3].textContent = `(${sleepyValleyCount} points)`;
+        }
     }
 
     function displayTotalPoints() {
@@ -369,15 +515,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(totalPointsContainer);
     }
 
-    function updateMissionScores() {
-        const missionsEls = document.querySelectorAll('.mission .score');
-        if (missionsEls && missionsEls.length) {
-            missionsEls[0].textContent = `(${borderlandsCount} points)`;
-            missionsEls[1].textContent = `(${forestEdgeCount} points)`;
-            missionsEls[2].textContent = `(${wateringPotatoesCount} points)`;
-            missionsEls[3].textContent = `(${sleepyValleyCount} points)`;
-        }
-    }
 
     document.getElementById('rotateButton').addEventListener('click', function () {
         elements[currentElementIndex].shape = rotateMatrix(elements[currentElementIndex].shape);
@@ -399,5 +536,4 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeMap();
     currentElementIndex = 0;
     displayElement(elements[currentElementIndex]);
-    updateMissionScores()
 });

@@ -11,7 +11,9 @@
     align-items: center;
     justify-content: flex-start;
     flex-basis: 30%;
+    /* Adjust width of right sidebar */
     padding-left: 20px;
+    /* Space between map and right sidebar */
 }
 
 #map {
@@ -64,6 +66,7 @@
     padding: 5px;
     border-radius: 5px;
     margin-top: 15px;
+    /* Space between elapsed time and current element */
 }
 
 #currentElement {
@@ -116,6 +119,7 @@
 
 .elapsed-time {
     text-align: center;
+    /* Centering the text */
     margin-bottom: 15px;
 }
 
@@ -123,46 +127,37 @@
     font-size: 14px;
 }
 
-#borderlands {
+#scoreDisplay {
+    background-image: url('borderlands.png');
+    background-size: cover;
     width: 100%;
+    /* Adjust size */
     height: 160px;
+    /* Adjust size */
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 15px;
+    /* Space between score and elapsed time */
 }
 
-.missions {
+.grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    /* 2 columns */
     gap: 10px;
+    /* spacing between images */
 }
 
-.mission {
+.game-element {
     position: relative;
     width: 210px;
+    /* adjust based on the desired width for your images */
     height: 70px;
+    /* adjust based on the desired height for your images */
 }
 
-.mission {
-    position: relative;
-    width: 210px;
-    height: 70px;
-}
-
-.mission {
-    position: relative;
-    width: 210px;
-    height: 70px;
-}
-
-.mission {
-    position: relative;
-    width: 210px;
-    height: 70px;
-}
-
-.mission img {
+.game-element img {
     width: 100%;
     height: 100%;
 }
