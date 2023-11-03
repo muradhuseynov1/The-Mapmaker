@@ -6,9 +6,6 @@ body::before {
     height: 100%;
     width: 100%;
     z-index: -1;
-    /* Place it behind the content */
-
-    /* The linear-gradient adds the transparency, adjust the last value of rgba as you see fit */
     background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -17,15 +14,10 @@ body::before {
 
 body {
     background-image: url('background.jpg');
-    /* Reference to your background image */
     background-size: cover;
-    /* Ensures the image covers the entire viewport */
     background-repeat: no-repeat;
-    /* Prevents the image from repeating */
     background-position: center center;
-    /* Centers the image */
     background-attachment: fixed;
-    /* Keeps the background image in place when the site is scrolled */
 }
 
 h1 {
@@ -109,6 +101,7 @@ h1 {
     font-size: 1.5em;
     margin-right: 10px;
     align-self: flex-start;
+    font-weight: bold;
 }
 
 .button-wrapper {
@@ -119,27 +112,18 @@ h1 {
 }
 
 .button-wrapper button {
-    margin-bottom: 10px;
-    /* Adjust this value according to your preference */
+    margin-bottom: 15px;
     background-color: darkviolet;
-    /* Green background color */
     color: white;
-    /* White text color */
-    padding: 15px 20px;
-    /* Padding around the button */
+    padding: 15px 50px;
     border: none;
-    /* Remove default border */
     border-radius: 5px;
-    /* Rounded corners */
     cursor: pointer;
-    /* Hand cursor on hover */
     transition: background-color 0.3s ease;
-    /* Smooth transition for hover effect */
 }
 
 .button-wrapper button:hover {
     background-color: rgba(0, 0, 0, 0.6);
-    /* Darker green on hover */
 }
 
 #currentElementWrapper {
@@ -148,17 +132,13 @@ h1 {
     border-radius: 5px;
     height: auto;
     width: max-content;
-    /* Set a specific width */
     overflow: hidden;
-    /* Hide any content that exceeds this size */
     height: auto;
     width: max-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Centers horizontally */
     justify-content: center;
-    /* Centers vertically */
 }
 
 #currentElement {
@@ -166,9 +146,7 @@ h1 {
     grid-template-columns: repeat(3, 40px);
     grid-gap: 15px;
     width: 130px;
-    /* 3 cells of 40px width + 2 gaps of 3px */
     height: 130px;
-    /* Similarly calculated for height */
 }
 
 #timeLabel {
@@ -216,12 +194,19 @@ h1 {
 }
 
 .elapsed-time {
-    text-align: center;
-    margin-bottom: 15px;
+    text-align: left;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
-.season-progress {
-    font-size: 14px;
+.current-season {
+    text-align: left;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
 .grid-container {
@@ -272,6 +257,16 @@ hr {
 }
 
 #totalPoints {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#rotateButton {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#mirrorButton {
     font-size: 1.2em;
     font-weight: bold;
 }

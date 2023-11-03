@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let forestEdgeCount = 0;
     let borderlandsCount = 0;
     let wateringPotatoesCount = 0;
+    const seasons = ["spring", "summer", "autumn", "water"];
     let countedFullRows = Array(mapSize).fill(false);
     let countedFullColumns = Array(mapSize).fill(false);
 
@@ -22,7 +23,141 @@ document.addEventListener('DOMContentLoaded', function () {
             rotation: 0,
             mirrored: false
         },
-        // rest of the elements
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 1],
+            [0, 0, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'farm',
+            shape: [[1, 1, 1],
+            [0, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 0],
+            [1, 0, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'town',
+            shape: [[1, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 1,
+            type: 'farm',
+            shape: [[0, 1, 0],
+            [1, 1, 1],
+            [0, 1, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 1],
+            [1, 0, 0],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 0, 0],
+            [1, 1, 1],
+            [1, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 1]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'forest',
+            shape: [[1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
+        {
+            time: 2,
+            type: 'water',
+            shape: [[1, 1, 0],
+            [1, 1, 0],
+            [0, 0, 0]],
+            rotation: 0,
+            mirrored: false
+        },
     ];
 
     function shuffle(array) {
@@ -90,8 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentElementEl.style.gridTemplateColumns = `repeat(${activeColumns}, 30px)`;
         currentElementEl.style.gridTemplateRows = `repeat(${activeRows}, 30px)`;
-        currentElementEl.style.justifyContent = 'center'; // center the grid horizontally
-        currentElementEl.style.alignItems = 'center'; // center the grid vertically
+        currentElementEl.style.justifyContent = 'center';
+        currentElementEl.style.alignItems = 'center';
 
         const timeLabel = document.getElementById('timeLabel');
         timeLabel.innerHTML = `${element.time} <img src="time_icon.png" alt="Time Icon" class="time-icon">`;
@@ -123,7 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displaySeason() {
         const timeSpentInCurrentSeason = totalUsedTime % 7;
-        document.querySelector('.season-progress').textContent = timeSpentInCurrentSeason;
+        document.querySelector('.season-progress').textContent = timeSpentInCurrentSeason === 0 ? 7 : timeSpentInCurrentSeason;
+        document.querySelector('.season-name').textContent = seasons[currentSeasonIndex];
     }
 
     function placeElement(position) {
@@ -159,12 +295,14 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElementIndex = (currentElementIndex + 1) % elements.length;
         displayElement(elements[currentElementIndex]);
 
-        const timeSpentInCurrentSeason = totalUsedTime % 7;
+        const timeSpentBeforeThisElement = totalUsedTime % 7;
 
         totalUsedTime += element.time;
         document.getElementById("totalTime").innerHTML = "Total time: " + totalUsedTime;
 
-        if (timeSpentInCurrentSeason + element.time > 6 && currentSeasonIndex < 3) {
+        const timeSpentInCurrentSeason = totalUsedTime % 7;
+
+        if ((timeSpentBeforeThisElement + element.time > 7 || timeSpentInCurrentSeason === 0) && currentSeasonIndex < 3) {
             currentSeasonIndex++;
         }
 

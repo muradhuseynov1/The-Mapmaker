@@ -29,7 +29,7 @@ The most serious consequence of a disciplinary offence is dismissal from the uni
 [ ] Season: the game is played over 4 seasons, each season lasts for 7 time units, the mission cards for each season are highlighted. (1 point)
 [ ] Season: At the end of each season, the end-of-season score is calculated from the corresponding mission cards and the game continues to the next season. (1 point)
 [ ] Mission: 1 extra point can be earned by completely encircling the mountains, which will be added to your score at the end of each season (or game) (1 point)
-[ ] End of game: at the end of the game, the total score over the four seasons is displayed (1 point).
+[x] End of game: at the end of the game, the total score over the four seasons is displayed (1 point).
 [x] Good-looking appearance (1 point)
 
 ### Extra requirements (10 points)
