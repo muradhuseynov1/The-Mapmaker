@@ -6,18 +6,10 @@ body::before {
     height: 100%;
     width: 100%;
     z-index: -1;
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('background.jpg');
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('theme.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-}
-
-body {
-    background-image: url('background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
 }
 
 h1 {
@@ -269,4 +261,48 @@ hr {
 #mirrorButton {
     font-size: 1.2em;
     font-weight: bold;
+}
+
+#statsPerSeason {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.seasonal-point {
+    border: 2px solid gray;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 5px;
+}
+
+#points-spring {
+    background-color: #90ee90;
+    color: black;
+}
+
+#points-summer {
+    background-color: #ffffe0;
+    color: black;
+}
+
+#points-autumn {
+    background-color: #f5deb3;
+    color: black;
+}
+
+#points-water {
+    background-color: #add8e6;
+    color: black;
+}
+
+.active-mission {
+    background-color: #4CAF50;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

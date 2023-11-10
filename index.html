@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
+    <title>Potato Map</title>
+    <link rel="icon" href="game_icon.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -13,6 +14,21 @@
     <div id="game">
         <div id="map"></div>
         <div id="rightSidebar">
+
+            <div id="statsPerSeason">
+                <div class="seasonal-point">
+                    <span>Spring: </span><span id="points-spring">0</span>
+                </div>
+                <div class="seasonal-point">
+                    <span>Summer: </span><span id="points-summer">0</span>
+                </div>
+                <div class="seasonal-point">
+                    <span>Autumn: </span><span id="points-autumn">0</span>
+                </div>
+                <div class="seasonal-point">
+                    <span>Water: </span><span id="points-water">0</span>
+                </div>
+            </div>
 
             <div id="statsContainer">
                 <span id="totalTime">Total time: 0</span>
@@ -24,19 +40,19 @@
             <div class="current-season">Current season: <span class="season-name">spring</span></div>
 
             <div class="grid-container">
-                <div class="game-element">
+                <div class="game-element" id="borderlands">
                     <img src="borderlands.png" alt="Game Image">
                     <span class="score"></span>
                 </div>
-                <div class="game-element">
+                <div class="game-element" id="edgeOfTheForest">
                     <img src="edgeOfTheForest.png" alt="Game Image">
                     <span class="score"></span>
                 </div>
-                <div class="game-element">
+                <div class="game-element" id="wateringPotatoes">
                     <img src="wateringPotatoes.png" alt="Game Image">
                     <span class="score"></span>
                 </div>
-                <div class="game-element">
+                <div class="game-element" id="sleepyValley">
                     <img src="sleepyValley.png" alt="Game Image">
                     <span class="score"></span>
                 </div>
