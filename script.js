@@ -11,7 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const seasons = ["spring", "summer", "autumn", "water"];
     let countedFullRows = Array(mapSize).fill(false);
     let countedFullColumns = Array(mapSize).fill(false);
-
+    let seasonPoints = { spring: 0, summer: 0, autumn: 0, water: 0 };
+    const missionsPerSeason = {
+        spring: ['borderlands', 'edgeOfTheForest'],
+        summer: ['edgeOfTheForest', 'wateringPotatoes'],
+        autumn: ['wateringPotatoes', 'sleepyValley'],
+        water: ['sleepyValley', 'borderlands']
+    };
 
     let elements = [
         {
@@ -260,6 +266,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const timeSpentInCurrentSeason = totalUsedTime % 7;
         document.querySelector('.season-progress').textContent = timeSpentInCurrentSeason === 0 ? 7 : timeSpentInCurrentSeason;
         document.querySelector('.season-name').textContent = seasons[currentSeasonIndex];
+        document.querySelectorAll('.game-element').forEach(el => {
+            el.classList.remove('active-mission');
+        });
+        missionsPerSeason[seasons[currentSeasonIndex]].forEach(mission => {
+            document.querySelector(`#${mission}`).classList.add('active-mission');
+        });
     }
 
     function placeElement(position) {
@@ -300,6 +312,11 @@ document.addEventListener('DOMContentLoaded', function () {
         totalUsedTime += element.time;
         document.getElementById("totalTime").innerHTML = "Total time: " + totalUsedTime;
 
+        if (totalUsedTime >= 28) {
+            endGame();
+            return;
+        }
+
         const timeSpentInCurrentSeason = totalUsedTime % 7;
 
         if ((timeSpentBeforeThisElement + element.time > 7 || timeSpentInCurrentSeason === 0) && currentSeasonIndex < 3) {
@@ -312,16 +329,16 @@ document.addEventListener('DOMContentLoaded', function () {
         checkSleepyValleyMission();
         displayTotalPoints();
         displaySeason();
+    }
 
-        if (totalUsedTime >= 28) {
-            console.log("Game Over!");
-            document.querySelectorAll('.cell:not(.fixed)').forEach(cell => {
-                cell.removeEventListener('dragover', preventDefault);
-                cell.removeEventListener('drop', handleDrop);
-            });
-            displayTotalPoints();
-            window.alert("GAME OVER! 28 TIME UNITS HAS PASSED");
-        }
+    function endGame() {
+        console.log("Game Over!");
+        document.querySelectorAll('.cell:not(.fixed)').forEach(cell => {
+            cell.removeEventListener('dragover', preventDefault);
+            cell.removeEventListener('drop', handleDrop);
+        });
+        displayTotalPoints();
+        window.alert("GAME OVER! 28 TIME UNITS HAS PASSED");
     }
 
     function canPlaceElement(position, element) {
@@ -359,6 +376,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function checkBorderlandsMission() {
+        if (!missionsPerSeason[seasons[currentSeasonIndex]].includes('borderlands')) {
+            return;
+        }
+
+        let previousBorderlandsCount = borderlandsCount;
+
         for (let i = 0; i < mapSize; i++) {
             if (countedFullRows[i]) continue;
 
@@ -393,10 +416,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        let pointsEarnedThisPlacement = borderlandsCount - previousBorderlandsCount;
+        seasonPoints[seasons[currentSeasonIndex]] += pointsEarnedThisPlacement;
+        updateSeasonalPointsDisplay();
         updateMissionScores();
     }
 
     function checkEdgeOfTheForestMission() {
+        if (!missionsPerSeason[seasons[currentSeasonIndex]].includes('edgeOfTheForest')) {
+            return;
+        }
+
+        let previousForestEdgeCount = forestEdgeCount;
+
         forestEdgeCount = 0;
 
         for (let j = 0; j < mapSize; j++) {
@@ -427,10 +459,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        let pointsEarnedThisPlacement = forestEdgeCount - previousForestEdgeCount;
+        seasonPoints[seasons[currentSeasonIndex]] += pointsEarnedThisPlacement;
+        updateSeasonalPointsDisplay();
         updateMissionScores();
     }
 
     function checkWateringPotatoesMission() {
+        if (!missionsPerSeason[seasons[currentSeasonIndex]].includes('wateringPotatoes')) {
+            return;
+        }
+
+        let previousWateringPotatoesCount = wateringPotatoesCount;
+        let countedWaterCells = new Set();
+
         wateringPotatoesCount = 0;
 
         for (let i = 0; i < mapSize; i++) {
@@ -438,26 +480,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cell = mapEl.querySelector(`[data-position='${i},${j}']`);
                 if (cell.getAttribute('type') === 'farm') {
                     const adjCells = [
-                        mapEl.querySelector(`[data-position='${i - 1},${j}']`),
-                        mapEl.querySelector(`[data-position='${i + 1},${j}']`),
-                        mapEl.querySelector(`[data-position='${i},${j - 1}']`),
-                        mapEl.querySelector(`[data-position='${i},${j + 1}']`)
+                        { cell: mapEl.querySelector(`[data-position='${i - 1},${j}']`), pos: `${i - 1},${j}` },
+                        { cell: mapEl.querySelector(`[data-position='${i + 1},${j}']`), pos: `${i + 1},${j}` },
+                        { cell: mapEl.querySelector(`[data-position='${i},${j - 1}']`), pos: `${i},${j - 1}` },
+                        { cell: mapEl.querySelector(`[data-position='${i},${j + 1}']`), pos: `${i},${j + 1}` }
                     ];
-                    adjCells.forEach(adjCell => {
-                        if (adjCell && adjCell.getAttribute('type') === 'water') {
+                    adjCells.forEach(({ cell, pos }) => {
+                        if (cell && cell.getAttribute('type') === 'water' && !countedWaterCells.has(pos)) {
                             wateringPotatoesCount += 2;
+                            countedWaterCells.add(pos);
                         }
                     });
                 }
             }
         }
 
+        let pointsEarnedThisPlacement = wateringPotatoesCount - previousWateringPotatoesCount;
+        seasonPoints[seasons[currentSeasonIndex]] += pointsEarnedThisPlacement;
+        updateSeasonalPointsDisplay();
         updateMissionScores();
     }
 
     let sleepyValleyCount = 0;
 
     function checkSleepyValleyMission() {
+        if (!missionsPerSeason[seasons[currentSeasonIndex]].includes('sleepyValley')) {
+            return;
+        }
+
+        let previousSleepyValleyCount = sleepyValleyCount;
+
         let points = 0;
 
         for (let i = 0; i < mapSize; i++) {
@@ -477,7 +529,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         sleepyValleyCount = points;
 
+        let pointsEarnedThisPlacement = sleepyValleyCount - previousSleepyValleyCount;
+        seasonPoints[seasons[currentSeasonIndex]] += pointsEarnedThisPlacement;
+        updateSeasonalPointsDisplay();
         updateMissionScores();
+    }
+
+    function updateSeasonalPointsDisplay() {
+        for (const season in seasonPoints) {
+            document.getElementById(`points-${season}`).textContent = `${seasonPoints[season]} points`;
+        }
     }
 
     function updateMissionScores() {
