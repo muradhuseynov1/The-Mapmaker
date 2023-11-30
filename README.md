@@ -1,44 +1,27 @@
-Murad Huseynov
-RX15MW
-Web programming - assignment
-This solution was submitted and created by the student above for the Web Programming course.
-I declare that this solution is my own work. I did not copy or use it from a third party
-solutions from third parties. I did not forward my solution to my fellow students, nor did I publish it.
-Eötvös Loránd University Student Requirements System
-(Organizational and Operational Regulations of ELTE, Volume II, § 74/C) states that as long as,
-as long as a student has been working on the work - or at least a significant part of it - of another student
-of another student's work as his or her own, it is a disciplinary offence.
-The most serious consequence of a disciplinary offence is dismissal from the university.
+# The mapmaker
+## Description of the game
+### Brief overview
+In this single-player game, you have to place map elements of different shapes and terrain types on an 11x11 square grid map. Each element is assigned a time value (1 or 2) and the game consists of 28 time units. At the end (or during) of the game, a number of checks (missions) are performed against the current state of the grid, and the final score is calculated.
+### Initial state of the map
+The map is an 11x11 square grid, initially filled with empty cells. The map contains mountain fields in 5 fixed cells. Our mountains are located in the following cells of the map:
+```
+(row, column) => (2,2), (4,9), (6,4), (9,10), (10,6)
+```
+### Placing map elements
+The types of terrain of map elements that can be placed are: forest, village, farm and water. The possible elements are shuffled randomly and then you need to place them on the map one by one in sequence. Each map element can be rotated and mirrored, and the map element cannot cover an already reserved field (a mountain is a reserved field), or have any part of it hanging off the map.
+### End of the game
+The game lasts up to 28 time units. Each map element is assigned a time unit, which determines how long it takes to explore it. You can draw new map elements until you reach 28 time units. When the total time value reaches or exceeds 28 time units, the game ends. For example, if we have 1 time unit left and we get a map element with two time units, we can still place the map element and then the game ends.
+### Calculating the score
+At the beginning of each game, 4 random mission cards (A,B,C,D) must be selected to score points. At the end of the game, you have to count the points you got for each mission, and the sum of these will be the final score. For each of the four missions, you must also indicate how many points you have received for each mission!
+### Seasons
+The 28 time units represent one year. It can be divided into 4 seasons, each season lasting up to 7 units of time. If the total time value reaches or exceeds a multiple of 7 while placing the map elements, the season ends.
+At the end of each season, you can score for 2 missions. At the end of spring, you can score points for mission A-B, at the end of summer for mission B-C, at the end of autumn for mission C-D and at the end of winter for mission D-A. For each of the four missions, you need to indicate per season how many points you have earned for each mission!
+At the end of the game, the points you have earned over the four seasons will be added together to give you your final score.
+### Missions
+1. Edge of the forest: you get one point for each forest field adjacent to the edge of your map.
+2. Sleepy valley: for every row with three forest fields, you get four points.
+3. Watering potatoes: You get two points for each water field adjacent to your farm fields.
+4. Borderlands: for each full row or column, you get six points.
 
-### Minimal requirements (not accepted without them, 8 points)
-[x] Square grid: After starting the game, a 11x11 map with the mountains in the right place is drawn (1 point)
-[x] Placement: One of the map elements is randomly displayed with the corresponding time units (1 point)
-[x] Placement: We can place the map element on the grid (anywhere) (2 points).
-[x] Time: The game lasts up to 28 units of time, and by placing a map element down, you subtract the unit of time associated with that map element. (1 point)
-[x] Mission: you can calculate the score of the mission "Borderlands" (1 point).
-[x] End of game: for each mission, it calculates how many points have been scored for that mission (1 point)
-[x] End of game: At the end of the game, after the 28 time units have elapsed, it calculates the score for the basic mission "Borderlands" and displays the number of points scored (1 point)
-
-### Normal requirements (12 points)
-[x] Placement: You can place the map element correctly (2 points).
-[x] Placement: The displayed map element can be rotated and placed in this way (1 point)
-[x] Placement: The displayed map element can be mirrored and placed in this way (1 point)
-[x] Mission: the mission "Edge of the forest" is displayed and can be scored (1 point)
-[x] Mission: the mission "Sleepy valley" is displayed and can be scored (1 point)
-[x] Mission: the mission "Watering potatoes" is displayed and can be scored (1 point)
-[x] Season: the game is played over 4 seasons, each season lasts for 7 time units, the mission cards for each season are highlighted. (1 point)
-[x] Season: At the end of each season, the end-of-season score is calculated from the corresponding mission cards and the game continues to the next season. (1 point)
-[ ] Mission: 1 extra point can be earned by completely encircling the mountains, which will be added to your score at the end of each season (or game) (1 point)
-[x] End of game: at the end of the game, the total score over the four seasons is displayed (1 point).
-[x] Good-looking appearance (1 point)
-
-### Extra requirements (10 points)
-[ ] Mission: Tree line (1 point)
-[ ] Mission: Watering canal (1 point)
-[ ] Mission: Wealthy town(1 point)
-[ ] Mission: Magicians' valley (1 point)
-[ ] Mission: Empty site (1 point)
-[ ] Mission: Terraced House (1 point)
-[ ] Mission: Odd silos (1 point)
-[ ] Mission: Rich countryside (1 point)
-[ ] Save: The game saves its state continuously to localStorage. When loading a page, if there is such a saved state, it is loaded from there, otherwise a new game is started. At the end of the game, the saved state is deleted (2 points).
+### Possible map element types
+You will find the possible map element types in this array, we have prepared it for you. You have to shuffle it at the beginning of the game and then place it one by one on the map. It is up to you how to do the placing. You could always draw a faint outline of the element you want to place while moving the mouse over the map, but another way is to just click on a cell and it will insert the shape in the given position starting from the top left cell. Objects also have ___rotation___ and ___mirrored___ data properties, so you can store these in the shapes you draw.
